@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>El Faro - Ayudanos a crecer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Estilos para el contador de noticias */
+        .news-counter {
+            margin-left: auto;
+            margin-right: 14px;
+            text-decoration: none;
+            color: #0b3d91;
+            font-weight: 600;
+            padding: 6px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            background: #fff;
+            cursor: default;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header original sin modificaciones -->
+    <header class="header" role="banner">
+        <img src="media/logo.png" alt="El Faro - logo" class="logo"
+             onerror="this.style.display='none'; document.getElementById('svgLogo').style.display='block'">
+        <svg id="svgLogo" class="logo" viewBox="0 0 64 64" style="display:none" aria-hidden="true">
+            <path d="M32 4 L36 20 H28 L32 4 Z" fill="#fff" />
+            <rect x="22" y="20" width="20" height="36" rx="3" fill="#fff" />
+            <circle cx="32" cy="30" r="3" fill="#0b3d91" />
+            <rect x="6" y="56" width="52" height="2" fill="#0b3d91" />
+        </svg>
+        <div class="header-text">
+            <h1>El Faro</h1>
+            <p class="tagline">Ayudanos a crecer</p>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="deporte.html" class="nav-link">Deporte</a>
+        <a href="negocios.html" class="nav-link">Negocios</a>
+        <a href="Nuevo.html" class="nav-link active">Ayudanos a crecer</a>
+        <span id="fecha-hora" class="nav-fecha"></span>
+        <!-- Contador de noticias (NUEVO) -->
+        <span id="news-counter" class="news-counter">Noticias: 9</span>
+        <script>
+            function actualizarFechaHora() {
+                const ahora = new Date();
+                const opciones = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+
+                const fechaHora = ahora.toLocaleDateString('es-ES', opciones);
+                document.getElementById('fecha-hora').textContent = fechaHora;
+            }
+
+            // Actualizar inmediatamente y cada segundo
+            actualizarFechaHora();
+            setInterval(actualizarFechaHora, 1000);
+        </script>
+    </nav>
+
+    <main class="container">
+        <section>
+            <h3>Agregar Nuevo Artículo</h3>
+            <div class="card">
+                <form id="article-form">
+                    <div class="form-group">
+                        <label for="article-title">Título del artículo:</label>
+                        <input type="text" id="article-title" required placeholder="Escribe el título aquí">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="article-description">Descripción del artículo:</label>
+                        <textarea id="article-description" required placeholder="Escribe la descripción aquí"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="article-category">Categoría:</label>
+                        <select id="article-category" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="general">General</option>
+                            <option value="negocios">Negocios</option>
+                            <option value="deportes">Deportes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="article-link">Enlace (URL):</label>
+                        <input type="text" id="article-link" required placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="article-image">Imagen (URL):</label>
+                        <input type="text" id="article-image" placeholder="https://... (opcional)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="article-source">Fuente:</label>
+                        <input type="text" id="article-source" required placeholder="Ej: Reuters">
+                    </div>
+
+                    <button type="submit" class="button">Agregar Artículo</button>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <h2>Artículos Recientes</h2>
+            <div class="card">
+                <table class="articles-table" id="articles-container">
+                    <!-- Los artículos se cargarán aquí dinámicamente -->
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="notification" id="notification">Artículo agregado correctamente!</div>
+
+    <script>
+        // Contador de noticias - Inicia en 9 (3 por cada sección)
+        let newsCount = 9;
+
+        // Actualizar contador de noticias
+        function actualizarContadorNoticias() {
+            document.getElementById('news-counter').textContent = `Noticias: ${newsCount}`;
+            // Guardar en localStorage
+            localStorage.setItem('newsCount', newsCount);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Referencias a elementos del DOM
+            const articleForm = document.getElementById('article-form');
+            const articlesContainer = document.getElementById('articles-container');
+            const notification = document.getElementById('notification');
+
+            // Array para almacenar los artículos
+            let articles = [];
+
+            // Cargar contador si existe en localStorage
+            const storedCount = localStorage.getItem('newsCount');
+            if (storedCount) {
+                newsCount = parseInt(storedCount);
+            }
+            actualizarContadorNoticias();
+
+            // Función para agregar un nuevo artículo
+            function addArticle(title, description, category, link, image, source) {
+                const newArticle = {
+                    id: Date.now(), // ID único basado en timestamp
+                    title,
+                    description,
+                    category,
+                    link,
+                    image,
+                    source,
+                    date: new Date().toLocaleDateString('es-ES')
+                };
+
+                articles.push(newArticle);
+                saveArticlesToStorage();
+
+                // Incrementar contador de noticias
+                newsCount++;
+                actualizarContadorNoticias();
+
+                renderArticles();
+
+                // Mostrar notificación
+                showNotification('Artículo agregado correctamente!');
+            }
+
+            // Función para guardar artículos en localStorage
+            function saveArticlesToStorage() {
+                localStorage.setItem('newsArticles', JSON.stringify(articles));
+            }
+
+            // Función para cargar artículos desde localStorage
+            function loadArticlesFromStorage() {
+                const storedArticles = localStorage.getItem('newsArticles');
+                if (storedArticles) {
+                    articles = JSON.parse(storedArticles);
+                }
+            }
+
+            // Función para renderizar los artículos en la tabla
+            function renderArticles() {
+                articlesContainer.innerHTML = '';
+
+                if (articles.length === 0) {
+                    // No mostrar nada si no hay artículos, como se solicitó
+                    return;
+                }
+
+                // Crear filas para cada artículo (solo el más reciente)
+                const ultimoArticulo = articles[articles.length - 1];
+                const articleRow = document.createElement('tr');
+
+                articleRow.innerHTML = `
+                        <td>
+                            <h3 class="article-title">
+                                <a href="${ultimoArticulo.link}" target="_blank" rel="noopener noreferrer">${ultimoArticulo.title}</a>
+                            </h3>
+                            <small>Publicado: ${ultimoArticulo.date}</small>
+                        </td>
+                        <td><span class="article-cat">${getCategoryDisplayName(ultimoArticulo.category)}</span></td>
+                        <td>
+                            <div class="content-cell">
+                                ${ultimoArticulo.image ?
+                        `<img class="news-thumb" src="${ultimoArticulo.image}" alt="${ultimoArticulo.title}" onerror="this.classList.add('placeholder')">` :
+                        `<div class="news-thumb placeholder">Sin imagen</div>`
+                    }
+                                <div>
+                                    ${ultimoArticulo.description}
+                                    <br>
+                                    <small class="small">Fuente: ${ultimoArticulo.source}</small>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+
+                articlesContainer.appendChild(articleRow);
+            }
+
+            // Función para obtener el nombre de display de una categoría
+            function getCategoryDisplayName(category) {
+                const categories = {
+                    'general': 'General',
+                    'negocios': 'Negocios',
+                    'deportes': 'Deportes'
+                };
+                return categories[category] || category;
+            }
+
+            // Función para mostrar notificación
+            function showNotification(message) {
+                notification.textContent = message;
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            // Manejar el envío del formulario
+            articleForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const title = document.getElementById('article-title').value;
+                const description = document.getElementById('article-description').value;
+                const category = document.getElementById('article-category').value;
+                const link = document.getElementById('article-link').value;
+                const image = document.getElementById('article-image').value;
+                const source = document.getElementById('article-source').value;
+
+                addArticle(title, description, category, link, image, source);
+
+                // Limpiar el formulario
+                articleForm.reset();
+            });
+
+            // Cargar artículos desde localStorage al iniciar
+            loadArticlesFromStorage();
+            renderArticles();
+
+        });
+    </script>
+</body>
+</html>

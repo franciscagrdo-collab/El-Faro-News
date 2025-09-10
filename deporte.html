@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>El Faro - Deporte</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .content-cell {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .news-thumb {
+            width: 140px;
+            height: 88px;
+            object-fit: contain;
+            border-radius: 6px;
+            flex: 0 0 140px;
+            background: #eee;
+        }
+
+        .iframe-wrap {
+            position: relative;
+            padding-top: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+            .iframe-wrap iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+
+        video {
+            width: 100%;
+            max-height: 72vh;
+            border-radius: 6px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Estilos para el contador de noticias */
+        .news-counter {
+            margin-left: auto;
+            margin-right: 14px;
+            text-decoration: none;
+            color: #0b3d91;
+            font-weight: 600;
+            padding: 6px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            background: #fff;
+            cursor: default;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header unificado con index -->
+    <header class="header" role="banner">
+        <img src="media/logo.png" alt="El Faro - logo" class="logo"
+             onerror="this.style.display='none'; document.getElementById('svgLogo').style.display='block'">
+        <svg id="svgLogo" class="logo" viewBox="0 0 64 64" style="display:none" aria-hidden="true">
+            <path d="M32 4 L36 20 H28 L32 4 Z" fill="#fff" />
+            <rect x="22" y="20" width="20" height="36" rx="3" fill="#fff" />
+            <circle cx="32" cy="30" r="3" fill="#0b3d91" />
+            <rect x="6" y="56" width="52" height="2" fill="#0b3d91" />
+        </svg>
+        <div class="header-text">
+            <h1>El Faro</h1>
+            <p class="tagline">Deporte</p>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="deporte.html" class="nav-link active">Deporte</a>
+        <a href="negocios.html" class="nav-link">Negocios</a>
+        <a href="Nuevo.html" class="nav-link">Ayudanos a crecer</a>
+        <span id="fecha-hora" class="nav-fecha"></span>
+        <!-- Contador de noticias (NUEVO) -->
+        <span id="news-counter" class="news-counter">Noticias: 9</span>
+        <script>
+            function actualizarFechaHora() {
+                const ahora = new Date();
+                const opciones = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+
+                const fechaHora = ahora.toLocaleDateString('es-ES', opciones);
+                document.getElementById('fecha-hora').textContent = fechaHora;
+            }
+
+            // Actualizar inmediatamente y cada segundo
+            actualizarFechaHora();
+            setInterval(actualizarFechaHora, 1000);
+        </script>
+    </nav>
+    <main class="container">
+        <section class="main-section" aria-labelledby="sec-deporte">
+            <h2 id="sec-deporte">Deporte - Noticias (Chile)</h2>
+
+            <table class="table-news" aria-describedby="noticias-deporte" id="articles-table">
+                <thead><tr><th>Título</th><th>Categoría</th><th>Contenido / Fuente</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><h3 class="article-title"><a href="https://www.alairelibre.cl/noticias/deportes/futbol/seleccion-chilena/con-varias-sorpresas-nicolas-cordova-entrego-la-nomina-de-la-roja-para/2025-08-22/132743.html" target="_blank" rel="noopener noreferrer">Nicolás Córdova entrega la nómina de La Roja</a></h3></td>
+                        <td><span class="article-cat">Selección</span></td>
+                        <td><div class="content-cell"><img class="news-thumb" src="media/roja.jpg" alt="La Roja" onerror="this.classList.add('placeholder')"><div>ANFP y cuerpo técnico dan vuelta a la nómina con incorporaciones jóvenes. <br><small class="small">Fuente: AlAireLibre / ANFP.</small></div></div></td>
+                    </tr>
+
+                    <tr>
+                        <td><h3 class="article-title"><a href="https://www.emol.com/noticias/Deportes/2025/08/19/1175428/almiron-colo-colo-reemplazante-interino.html" target="_blank" rel="noopener noreferrer">Colo Colo oficializa la salida de Jorge Almirón</a></h3></td>
+                        <td><span class="article-cat">Fútbol - Clubes</span></td>
+                        <td><div class="content-cell"><img class="news-thumb" src="media/colocolo.jpg" alt="Colo Colo" onerror="this.classList.add('placeholder')"><div>Decisión en la banca de Colo Colo y nombres propuestos para reemplazo interino. <br><small class="small">Fuente: Emol.</small></div></div></td>
+                    </tr>
+
+                    <tr>
+                        <td><h3 class="article-title"><a href="https://www.emol.com/noticias/Deportes/2025/08/20/1175585/supercopa-colocolo-udechile-fecha-anfp.html" target="_blank" rel="noopener noreferrer">ANFP anuncia estadio y fecha de la Supercopa</a></h3></td>
+                        <td><span class="article-cat">Competencias</span></td>
+                        <td><div class="content-cell"><img class="news-thumb" src="media/supercopa.jpg" alt="Supercopa" onerror="this.classList.add('placeholder')"><div>Fechas y sedes confirmadas para el clásico y Supercopa nacional. <br><small class="small">Fuente: Emol / ANFP.</small></div></div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="card media-card">
+                <h3>Video de la sección Deporte</h3>
+                <video controls preload="metadata" poster="https://via.placeholder.com/1200x675.png?text=Deporte+poster"><source src="media/deporte.mp4" type="video/mp4">Si no tienes el MP4, mira la cobertura en YouTube <a href="https://www.youtube.com/watch?v=AzrU_97CPu0" target="_blank" rel="noopener noreferrer">aquí</a>.</video>
+                <div class="iframe-wrap"><iframe src="https://www.youtube.com/embed/AzrU_97CPu0" title="Análisis nómina La Roja" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                <small class="small">Video: análisis de la nómina y reacciones locales.</small>
+            </div>
+
+        </section>
+    </main>
+
+    <footer role="contentinfo">&copy; 2025 El Faro — Sección Deporte.</footer>
+
+    <script>
+        // Contador de noticias
+        let newsCount = 9;
+
+        // Actualizar contador de noticias
+        function actualizarContadorNoticias() {
+            document.getElementById('news-counter').textContent = `Noticias: ${newsCount}`;
+        }
+
+        // Cargar contador si existe en localStorage
+        const storedCount = localStorage.getItem('newsCount');
+        if (storedCount) {
+            newsCount = parseInt(storedCount);
+        }
+        actualizarContadorNoticias();
+
+        // Cargar y mostrar artículos de la categoría Deportes
+        function cargarArticulosDeportes() {
+            const storedArticles = localStorage.getItem('newsArticles');
+            if (!storedArticles) return;
+
+            const articles = JSON.parse(storedArticles);
+            const articlesTable = document.getElementById('articles-table');
+            const tbody = articlesTable.querySelector('tbody');
+
+            // Filtrar solo artículos de la categoría deportes
+            const articulosDeportes = articles.filter(article => article.category === 'deportes');
+
+            // Agregar los artículos de deportes al final de la tabla
+            articulosDeportes.forEach(article => {
+                const newRow = document.createElement('tr');
+
+                newRow.innerHTML = `
+                    <td><h3 class="article-title"><a href="${article.link}" target="_blank" rel="noopener noreferrer">${article.title}</a></h3></td>
+                    <td><span class="article-cat">${getCategoryDisplayName(article.category)}</span></td>
+                    <td>
+                      <div class="content-cell">
+                        ${article.image ?
+                        `<img class="news-thumb" src="${article.image}" alt="${article.title}" onerror="this.classList.add('placeholder')">` :
+                        `<div class="news-thumb placeholder">Sin imagen</div>`
+                    }
+                        <div>
+                          ${article.description}
+                          <br>
+                          <small class="small">Fuente: ${article.source}</small>
+                        </div>
+                      </div>
+                    </td>
+                  `;
+
+                tbody.appendChild(newRow);
+            });
+        }
+
+        // Función para obtener el nombre de display de una categoría
+        function getCategoryDisplayName(category) {
+            const categories = {
+                'general': 'General',
+                'negocios': 'Negocios',
+                'deportes': 'Deportes'
+            };
+            return categories[category] || category;
+        }
+
+        // Navegación activa
+        (function () {
+            const links = document.querySelectorAll('.main-nav .nav-link');
+            links.forEach(a => {
+                const href = a.getAttribute('href');
+                const page = location.pathname.split('/').pop() || 'index.html';
+                if (href === page || (href === 'index.html' && (page === '' || page === 'index.html'))) a.classList.add('active');
+            });
+        })();
+
+        // Cargar artículos al iniciar
+        cargarArticulosDeportes();
+
+        // media helper (igual que en las otras páginas)
+        (function () {
+            document.querySelectorAll('.media-card').forEach(card => {
+                const video = card.querySelector('video'), iframeWrap = card.querySelector('.iframe-wrap');
+                if (!video || !iframeWrap) return;
+                iframeWrap.style.display = 'none';
+                let decided = false;
+
+                function showVideo() {
+                    if (decided) return;
+                    decided = true;
+                    video.style.display = '';
+                    iframeWrap.style.display = 'none';
+                }
+
+                function showIframe() {
+                    if (decided) return;
+                    decided = true;
+                    video.style.display = 'none';
+                    iframeWrap.style.display = '';
+                }
+
+                video.addEventListener('loadedmetadata', showVideo);
+                video.addEventListener('canplay', showVideo);
+                video.addEventListener('error', showIframe);
+
+                setTimeout(() => {
+                    if (decided) return;
+                    if (video.readyState > 0) showVideo();
+                    else showIframe();
+                }, 700);
+            });
+        })();
+    </script>
+</body>
+</html>

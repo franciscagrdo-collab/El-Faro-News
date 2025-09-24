@@ -1,240 +1,567 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>El Faro - Portada</title>
-    <link rel="stylesheet" href="css/style.css">
-
     <style>
-        /* Estilos para el contador de noticias */
-        .news-counter {
-            margin-left: auto;
-            margin-right: 14px;
-            text-decoration: none;
-            color: #0b3d91;
-            font-weight: 600;
-            padding: 6px 8px;
+        .logo {
+            height: 80px;
+            width: auto;
+            margin-right: 1rem;
+        }
+
+        .hero.is-primary {
+            background: linear-gradient(135deg, #0b3d91 0%, #1e6fd9 100%);
+        }
+
+        .noticia-destacada img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
             border-radius: 6px;
+        }
+
+        .noticia-reciente img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .noticia-pequena img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 3px;
+        }
+
+        .placeholder {
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .card {
+            transition: transform 0.2s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-2px);
+            }
+
+        .noticia-destacada {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-left: 4px solid #0b3d91;
+            margin-bottom: 2rem;
+        }
+
+        .noticia-reciente {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+            .noticia-reciente:last-child {
+                border-bottom: none;
+            }
+
+        .lista-noticias-pequenas {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .noticia-pequena {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .badge-nuevo {
+            background: #ff3860;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+
+        .sidebar-widget {
+            margin-bottom: 1.5rem;
+        }
+
+        .indicador-economico {
+            border-left: 3px solid #0b3d91;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .clima-widget {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .temperatura {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .info-clima {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .footer-grande {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 3rem 1.5rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-column h4 {
+            color: #ecf0f1;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+            .footer-links a:hover {
+                color: #3498db;
+            }
+
+        .redes-sociales a {
             display: inline-block;
-            background: #fff;
-            cursor: default;
-            white-space: nowrap;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: #bdc3c7;
+            transition: color 0.3s ease;
+        }
+
+            .redes-sociales a:hover {
+                color: #3498db;
+            }
+
+        .newsletter-input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+        }
+
+            .newsletter-input::placeholder {
+                color: #bdc3c7;
+            }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .medios-pago img {
+            height: 30px;
+            margin-right: 10px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <link rel="stylesheet" href="css/style.css">
-
-    <header class="header" role="banner">
-        <img src="media/logo.png" alt="El Faro - logo" class="logo"
-             onerror="this.style.display='none'; document.getElementById('svgLogo').style.display='block'">
-        <svg id="svgLogo" class="logo" viewBox="0 0 64 64" style="display:none" aria-hidden="true">
-            <path d="M32 4 L36 20 H28 L32 4 Z" fill="#fff" />
-            <rect x="22" y="20" width="20" height="36" rx="3" fill="#fff" />
-            <circle cx="32" cy="30" r="3" fill="#0b3d91" />
-            <rect x="6" y="56" width="52" height="2" fill="#0b3d91" />
-        </svg>
-        <div class="header-text">
-            <h1>El Faro</h1>
-            <p class="tagline">Noticias de Chile</p>
+    <section class="hero is-primary" style="background: linear-gradient(135deg, #0b3d91 0%, #1e6fd9 100%); font-family: 'Courier New', Courier, monospace;">
+        <div class="hero-body">
+            <div class="container">
+                <div class="level is-flex-direction-column">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <figure class="image is-64x64">
+                                <img src="media/logo.png" alt="El Faro - logo" class="logo"
+                                     onerror="this.style.display='none'; document.getElementById('svgLogo').style.display='block'">
+                                <svg id="svgLogo" class="logo" viewBox="0 0 64 64" style="display:none" aria-hidden="true">
+                                    <path d="M32 4 L36 20 H28 L32 4 Z" fill="#fff" />
+                                    <rect x="22" y="20" width="20" height="36" rx="3" fill="#fff" />
+                                    <circle cx="32" cy="30" r="3" fill="#0b3d91" />
+                                    <rect x="6" y="56" width="52" height="2" fill="#0b3d91" />
+                                </svg>
+                            </figure>
+                        </div>
+                        <div class="level-item">
+                            <div>
+                                <h1 class="title is-1 has-text-white" style="font-family: 'Courier New', Courier, monospace;">El Faro</h1>
+                                <p class="subtitle has-text-white" style="font-family: 'Courier New', Courier, monospace;">Noticias de Chile</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="level-right mt-4">
+                        <div class="level-item">
+                            <span id="fecha-hora" class="has-text-white has-text-weight-semibold"></span>
+                        </div>
+                        <div class="level-item">
+                            <span id="news-counter" class="tag" style="background-color: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5);">Noticias: 9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <nav class="main-nav" role="navigation" aria-label="Menú principal">
-        <a href="index.html" class="nav-link">Inicio</a>
-        <a href="deporte.html" class="nav-link">Deporte</a>
-        <a href="negocios.html" class="nav-link">Negocios</a>
-        <a href="Nuevo.html" class="nav-link">Ayudanos a crecer</a>
-        <span id="fecha-hora" class="nav-fecha"></span>
-        <!-- Contador de noticias -->
-        <span id="news-counter" class="news-counter">Noticias: 9</span>
-        <script>
-            function actualizarFechaHora() {
-                const ahora = new Date();
-                const opciones = {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                };
-
-                const fechaHora = ahora.toLocaleDateString('es-ES', opciones);
-                document.getElementById('fecha-hora').textContent = fechaHora;
-            }
-
-            // Actualizar inmediatamente y cada segundo
-            actualizarFechaHora();
-            setInterval(actualizarFechaHora, 1000);
-        </script>
+    <nav class="navbar is-dark" role="navigation" aria-label="Menú principal">
+        <div class="container">
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a href="index.html" class="navbar-item is-active">Inicio</a>
+                    <a href="deporte.html" class="navbar-item">Deporte</a>
+                    <a href="negocios.html" class="navbar-item">Negocios</a>
+                    <a href="Nuevo.html" class="navbar-item">Ayúdanos a crecer</a>
+                </div>
+            </div>
+        </div>
     </nav>
 
-    <main class="container" role="main">
-        <section aria-labelledby="sec-principales" class="main-section">
-            <div class="section-title"><h2 id="sec-principales">Noticias Principales (Chile)</h2></div>
-
-            <!-- Tabla con 3 noticias chilenas -->
-            <table class="table-news" aria-describedby="noticias-generales" id="articles-table">
-                <thead>
-                    <tr><th>Título</th><th>Categoría</th><th>Contenido / Fuente</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <h3 class="article-title">
-                                <a href="https://www.reuters.com/world/americas/chile-regulator-raises-bar-restart-parts-codelco-mine-after-collapse-2025-08-25/" target="_blank" rel="noopener noreferrer">
-                                    Sernageomin exige más requisitos para reabrir zonas de El Teniente
-                                </a>
-                            </h3>
-                        </td>
-                        <td><span class="article-cat">Minería / Seguridad</span></td>
-                        <td>
-                            <div class="content-cell">
-                                <img class="news-thumb" src="media/teniente.jpg" alt="El Teniente - referencia" onerror="this.classList.add('placeholder')">
-                                <div>El regulador elevó condiciones para reanudar operaciones tras el derrumbe en El Teniente. <br><small class="small">Fuente: Reuters (enlace).</small></div>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8">
+                    <article class="card noticia-destacada">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image">
+                                        <img src="media/teniente.jpg" alt="El Teniente">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <span class="tag is-danger badge-nuevo">ÚLTIMA HORA</span>
+                                    <h2 class="title is-2">
+                                        <a href="https://www.reuters.com/world/americas/chile-regulator-raises-bar-restart-parts-codelco-mine-after-collapse-2025-08-25/"
+                                           target="_blank" rel="noopener noreferrer">
+                                            Sernageomin exige más requisitos para reabrir zonas de El Teniente
+                                        </a>
+                                    </h2>
+                                    <p class="subtitle is-4">
+                                        El regulador elevó condiciones para reanudar operaciones tras el derrumbe en la mina de Codelco.
+                                        La medida afecta la producción cuprífera nacional y podría impactar la economía regional.
+                                    </p>
+                                    <div class="tags">
+                                        <span class="tag is-dark">General</span>
+                                    </div>
+                                    <small class="has-text-grey">Fuente: Reuters | Hace 2 horas</small>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </article>
 
-                    <tr>
-                        <td>
-                            <h3 class="article-title">
-                                <a href="https://www.reuters.com/latam/negocio/7GBNTUYWLRIVVDSHRZ2AZUHBWA-2025-08-25/" target="_blank" rel="noopener noreferrer">
-                                    Chile suspende importaciones avícolas desde Argentina por brote de gripe aviar
-                                </a>
-                            </h3>
-                        </td>
-                        <td><span class="article-cat">Salud Pública / Comercio</span></td>
-                        <td>
-                            <div class="content-cell">
-                                <img class="news-thumb" src="media/avicola.jpg" alt="Brote gripe aviar - referencia" onerror="this.classList.add('placeholder')">
-                                <div>El SAG anunció la medida para proteger estatus sanitario de aves en Chile. <br><small class="small">Fuente: Reuters.</small></div>
+                    <div class="box">
+                        <h2 class="title is-4 mb-4">Noticias Recientes</h2>
+
+                        <article class="media noticia-reciente">
+                            <figure class="media-left">
+                                <p class="image">
+                                    <img src="media/avicola.jpg" alt="Gripe aviar">
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <span class="tag is-warning badge-nuevo">NUEVO</span>
+                                <h3 class="title is-5">
+                                    <a href="https://www.reuters.com/latam/negocio/7GBNTUYWLRIVVDSHRZ2AZUHBWA-2025-08-25/"
+                                       target="_blank" rel="noopener noreferrer">
+                                        Chile suspende importaciones avícolas desde Argentina por brote de gripe aviar
+                                    </a>
+                                </h3>
+                                <p>El SAG anunció la medida para proteger estatus sanitario de aves en Chile. La suspensión afectará temporalmente el abastecimiento nacional.</p>
+                                <div class="tags">
+                                    <span class="tag is-dark">General</span>
+                                </div>
+                                <small class="has-text-grey">Fuente: Reuters | Hace 4 horas</small>
                             </div>
-                        </td>
-                    </tr>
+                        </article>
 
-                    <tr>
-                        <td>
-                            <h3 class="article-title">
-                                <a href="https://www.reuters.com/latam/negocio/LA7VFZKJ5ZLCBPXXEHEIXN2Q5U-2025-08-01/" target="_blank" rel="noopener noreferrer">
-                                    Imacec: actividad económica chilena creció 3,1% en junio
-                                </a>
-                            </h3>
-                        </td>
-                        <td><span class="article-cat">Economía</span></td>
-                        <td>
-                            <div class="content-cell">
-                                <img class="news-thumb" src="media/imacec.jpg" alt="Imacec - referencia" onerror="this.classList.add('placeholder')">
-                                <div>Banco Central informó crecimiento impulsado por servicios, comercio e industria. <br><small class="small">Fuente: Reuters / Banco Central.</small></div>
+                        <article class="media noticia-reciente">
+                            <figure class="media-left">
+                                <p class="image">
+                                    <img src="media/imacec.jpg" alt="Imacec">
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <span class="tag is-warning badge-nuevo">NUEVO</span>
+                                <h3 class="title is-5">
+                                    <a href="https://www.reuters.com/latam/negocio/LA7VFZKJ5ZLCBPXXEHEIXN2Q5U-2025-08-01/"
+                                       target="_blank" rel="noopener noreferrer">
+                                        Imacec: actividad económica chilena creció 3,1% en junio
+                                    </a>
+                                </h3>
+                                <p>Banco Central informó crecimiento impulsado por servicios, comercio e industria. Resultado supera expectativas del mercado.</p>
+                                <div class="tags">
+                                    <span class="tag is-dark">Negocios</span>
+                                </div>
+                                <small class="has-text-grey">Fuente: Reuters | Hace 6 horas</small>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-           
-            <div class="card media-card">
-                <h3>Video destacado</h3>
-                <video controls preload="metadata" poster="https://via.placeholder.com/1200x675.png?text=Video+poster">
-                    <source src="media/general.mp4" type="video/mp4">
-                    Tu navegador no soporta video. Mira la cobertura en YouTube
-                    <a href="https://www.youtube.com/watch?v=fb7ISNhlRXo" target="_blank" rel="noopener noreferrer">aquí</a>.
-                </video>
-                <div class="iframe-wrap" aria-hidden="false">
-                    <iframe src="https://www.youtube.com/embed/fb7ISNhlRXo" title="Cobertura El Teniente - 24Horas" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </article>
+                    </div>
                 </div>
-                <small class="small">Video: 24Horas / cobertura local.</small>
+
+                <div class="column is-4">
+                    <div class="card sidebar-widget">
+                        <div class="card-content clima-widget">
+                            <h3 class="title is-5 has-text-white">Clima Santiago</h3>
+                            <div class="content has-text-white">
+                                <div class="temperatura">22°C</div>
+                                <div class="info-clima">
+                                    <span>Parcialmente nublado</span>
+                                </div>
+                                <div class="level is-mobile mt-2">
+                                    <div class="level-left">
+                                        <small>Máx: 24°C</small>
+                                    </div>
+                                    <div class="level-right">
+                                        <small>Mín: 16°C</small>
+                                    </div>
+                                </div>
+                                <a href="https://www.accuweather.com/es/cl/santiago/60449/weather-forecast/60449"
+                                   target="_blank" class="button is-small is-white is-outlined mt-2">
+                                    Ver en AccuWeather
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card sidebar-widget">
+                        <div class="card-content">
+                            <h3 class="title is-5">Más Noticias</h3>
+                            <div class="lista-noticias-pequenas">
+                                <article class="noticia-pequena">
+                                    <img src="media/codelco.jpg" alt="Codelco" class="news-thumb">
+                                    <div>
+                                        <h4 class="title is-6">
+                                            <a href="https://www.reuters.com/world/americas/chiles-codelco-lower-2025-copper-target-after-el-teniente-accident-2025-08-20/" target="_blank">
+                                                Codelco ajusta meta de producción 2025
+                                            </a>
+                                        </h4>
+                                        <small class="has-text-grey">Negocios · Hace 8 horas</small>
+                                    </div>
+                                </article>
+
+                                <article class="noticia-pequena">
+                                    <img src="media/roja.jpg" alt="La Roja" class="news-thumb">
+                                    <div>
+                                        <h4 class="title is-6">
+                                            <a href="https://www.alairelibre.cl/noticias/deportes/futbol/seleccion-chilena/con-varias-sorpresas-nicolas-cordova-entrego-la-nomina-de-la-roja-para/2025-08-22/132743.html" target="_blank">
+                                                La Roja anuncia nueva nómina
+                                            </a>
+                                        </h4>
+                                        <small class="has-text-grey">Deportes · Ayer</small>
+                                    </div>
+                                </article>
+
+                                <article class="noticia-pequena">
+                                    <img src="media/inflacion.jpg" alt="Inflación" class="news-thumb">
+                                    <div>
+                                        <h4 class="title is-6">
+                                            <a href="https://www.reuters.com/world/americas/chile-inflation-overshoots-forecasts-raising-doubts-about-rate-cut-path-2025-08-08/" target="_blank">
+                                                Inflación supera expectativas
+                                            </a>
+                                        </h4>
+                                        <small class="has-text-grey">Negocios · Ayer</small>
+                                    </div>
+                                </article>
+
+                                <article class="noticia-pequena">
+                                    <img src="media/colocolo.jpg" alt="Colo Colo" class="news-thumb">
+                                    <div>
+                                        <h4 class="title is-6">
+                                            <a href="https://www.emol.com/noticias/Deportes/2025/08/19/1175428/almiron-colo-calo-reemplazante-interino.html" target="_blank">
+                                                Colo Colo define nuevo técnico
+                                            </a>
+                                        </h4>
+                                        <small class="has-text-grey">Deportes · 2 días</small>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card sidebar-widget">
+                        <div class="card-content">
+                            <h3 class="title is-5">Indicadores Económicos</h3>
+                            <div class="content">
+                                <div class="indicador-economico">
+                                    <div class="level">
+                                        <div class="level-left">Dólar observado</div>
+                                        <div class="level-right has-text-weight-bold">$945</div>
+                                    </div>
+                                    <small class="has-text-grey">Variación: +0.2%</small>
+                                </div>
+
+                                <div class="indicador-economico">
+                                    <div class="level">
+                                        <div class="level-left">Unidad de Fomento</div>
+                                        <div class="level-right has-text-weight-bold">$36.452</div>
+                                    </div>
+                                    <small class="has-text-grey">Próximo mes: $36.521</small>
+                                </div>
+
+                                <div class="indicador-economico">
+                                    <div class="level">
+                                        <div class="level-left">IPC Mensual</div>
+                                        <div class="level-right has-text-weight-bold has-text-success">+0.4%</div>
+                                    </div>
+                                    <small class="has-text-grey">Acumulado anual: +3.2%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-grande">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-3">
+                    <div class="footer-column">
+                        <h4>El Faro</h4>
+                        <p>Medio de comunicación creado con fines pedagógicos para instituto AIEP.</p>
+                        <div class="redes-sociales mt-3">
+                            <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Secciones -->
+                <div class="column is-2">
+                    <div class="footer-column">
+                        <h4>Secciones</h4>
+                        <div class="footer-links">
+                            <a href="index.html">Inicio</a>
+                            <a href="deporte.html">Deporte</a>
+                            <a href="negocios.html">Negocios</a>
+                            <a href="Nuevo.html">Ayúdanos a crecer</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna 3: Categorías -->
+                <div class="column is-2">
+                    <div class="footer-column">
+                        <h4>Categorías</h4>
+                        <div class="footer-links">
+                            <a href="#">General</a>
+                            <a href="#">Deportes</a>
+                            <a href="#">Negocios</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna 4: Contacto -->
+                <div class="column is-2">
+                    <div class="footer-column">
+                        <h4>Contacto</h4>
+                        <div class="footer-links">
+                            <p><i class="fas fa-envelope"></i> contacto@elfaro.cl</p>
+                            <p><i class="fas fa-phone"></i> +56 9 1234 5678</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Santiago, Chile</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna 5: Newsletter -->
+                <div class="column is-3">
+                    <div class="footer-column">
+                        <h4>Newsletter</h4>
+                        <p>Suscríbete para recibir las noticias más importantes en tu correo.</p>
+                        <div class="field has-addons mt-2">
+                            <div class="control is-expanded">
+                                <input class="input newsletter-input" type="email" placeholder="tu@email.com">
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary">Suscribir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Audio / Podcast local</h3>
-                <p>Podcast con análisis sobre El Teniente</p>
-                <a class="button" href="https://envivo.adnradio.cl/audio/1754183680043/" target="_blank" rel="noopener noreferrer">Abrir podcast en ADN (nueva pestaña)</a>
-                <p class="small" style="margin-top:8px;"></p>
+            <!-- Línea inferior -->
+            <div class="footer-bottom">
+                <div class="columns is-vcentered">
+                    <div class="column is-6">
+                        <p>&copy; 2025 El Faro. Todos los derechos reservados.</p>
+                    </div>
+                    
+                </div>
             </div>
-
-            <div class="card">
-                <h2 class="contacto-titulo">Contáctanos</h2>
-                <form id="formulario-contacto">
-                    <div class="form-group">
-                        <label class="form-label">Nombre <span class="required">*</span></label>
-                        <input type="text" class="form-input" name="nombre" required placeholder="Nombre Apellido">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email <span class="required">*</span></label>
-                        <input type="text" class="form-input" name="email" required placeholder="email@ejemplo.com">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Teléfono</label>
-                        <input type="text" class="form-input" name="telefono" placeholder="+569 1234 56789">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Mensaje <span class="required">*</span></label>
-                        <textarea class="form-textarea" name="mensaje" required placeholder="Escribenos..."></textarea>
-                    </div>
-                    <button type="submit" class="button">Enviar mensaje</button>
-                    <div id="mensaje-alerta" class="form-mensaje"></div>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer role="contentinfo">&copy; 2025 El Faro — Sitio de práctica educativo.</footer>
+        </div>
+    </footer>
 
     <script>
-        // Contador de noticias
-        let newsCount = 9;
+        function actualizarFechaHora() {
+            const ahora = new Date();
+            const opciones = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const fechaHora = ahora.toLocaleDateString('es-ES', opciones);
+            document.getElementById('fecha-hora').textContent = fechaHora;
+        }
+        actualizarFechaHora();
+        setInterval(actualizarFechaHora, 1000);
 
-        // Actualizar contador de noticias
+        let newsCount = 9;
         function actualizarContadorNoticias() {
             document.getElementById('news-counter').textContent = `Noticias: ${newsCount}`;
         }
 
-        // Cargar contador si existe en localStorage
         const storedCount = localStorage.getItem('newsCount');
         if (storedCount) {
             newsCount = parseInt(storedCount);
         }
         actualizarContadorNoticias();
 
-        // Cargar y mostrar artículos de la categoría General
-        function cargarArticulosGenerales() {
+        function cargarArticulosRecientes() {
             const storedArticles = localStorage.getItem('newsArticles');
             if (!storedArticles) return;
 
             const articles = JSON.parse(storedArticles);
-            const articlesTable = document.getElementById('articles-table');
-            const tbody = articlesTable.querySelector('tbody');
+            const listaNoticias = document.querySelector('.lista-noticias-pequenas');
 
-            // Filtrar solo artículos de la categoría General (esto es lo único que cambia)
-            const articulosGenerales = articles.filter(article => article.category === 'general');
+            articles.reverse().forEach(article => {
+                const articleElement = document.createElement('article');
+                articleElement.className = 'noticia-pequena';
 
-            // Agregar los artículos generales al final de la tabla
-            articulosGenerales.forEach(article => {
-                const newRow = document.createElement('tr');
+                articleElement.innerHTML = `
+                        <img src="${article.image || 'https://via.placeholder.com/80x60.png?text=Imagen'}" alt="${article.title}" class="news-thumb" onerror="this.src='https://via.placeholder.com/80x60.png?text=Imagen'">
+                        <div>
+                            <h4 class="title is-6">
+                                <a href="${article.link}" target="_blank">${article.title}</a>
+                            </h4>
+                            <small class="has-text-grey">${getCategoryDisplayName(article.category)} · ${article.date || 'Reciente'}</small>
+                        </div>
+                    `;
 
-                newRow.innerHTML = `
-              <td><h3 class="article-title"><a href="${article.link}" target="_blank" rel="noopener noreferrer">${article.title}</a></h3></td>
-              <td><span class="article-cat">${getCategoryDisplayName(article.category)}</span></td>
-              <td>
-                <div class="content-cell">
-                  ${article.image ?
-                        `<img class="news-thumb" src="${article.image}" alt="${article.title}" onerror="this.classList.add('placeholder')">` :
-                        `<div class="news-thumb placeholder">Sin imagen</div>`
-                    }
-                  <div>
-                    ${article.description}
-                    <br>
-                    <small class="small">Fuente: ${article.source}</small>
-                  </div>
-                </div>
-              </td>
-            `;
-
-                tbody.appendChild(newRow);
+                listaNoticias.insertBefore(articleElement, listaNoticias.firstChild);
             });
         }
 
@@ -247,86 +574,26 @@
             return categories[category] || category;
         }
 
-
-        // Formulario de contacto
-        document.getElementById('formulario-contacto').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const mensajeAlerta = document.getElementById('mensaje-alerta');
-
-            setTimeout(() => {
-                mensajeAlerta.textContent = '¡Mensaje enviado! Nuestro equipo se contactará contigo';
-                mensajeAlerta.className = 'form-mensaje success';
-                mensajeAlerta.style.display = 'block';
-                this.reset();
-
-                setTimeout(() => {
-                    mensajeAlerta.style.display = 'none';
-                }, 10000);
-            }, 1000);
-        });
-
-        // Validación en tiempo real
-        const inputs = document.querySelectorAll('.form-input, .form-textarea');
-        inputs.forEach(input => {
-            input.addEventListener('blur', function () {
-                if (this.hasAttribute('required') && !this.value) {
-                    this.style.borderColor = '#e53e3e';
-                } else {
-                    this.style.borderColor = '#e2e8f0';
-                }
-            });
-        });
-
-        // Navegación activa
         (function () {
-            const links = document.querySelectorAll('.main-nav .nav-link');
+            const links = document.querySelectorAll('.navbar-item');
             links.forEach(a => {
                 const href = a.getAttribute('href');
                 const page = location.pathname.split('/').pop() || 'index.html';
                 if (href === page || (href === 'index.html' && (page === '' || page === 'index.html'))) {
-                    a.classList.add('active');
+                    a.classList.add('is-active');
                 }
             });
         })();
 
-        // Media helper
-        (function () {
-            document.querySelectorAll('.media-card').forEach(card => {
-                const video = card.querySelector('video');
-                const iframeWrap = card.querySelector('.iframe-wrap');
-                if (!video || !iframeWrap) return;
+        document.querySelector('.footer-column .button').addEventListener('click', function () {
+            const email = document.querySelector('.newsletter-input').value;
+            if (email) {
+                alert('¡Gracias por suscribirte! Te hemos enviado un correo de confirmación.');
+                document.querySelector('.newsletter-input').value = '';
+            }
+        });
 
-                iframeWrap.style.display = 'none';
-                let decided = false;
-
-                function showVideo() {
-                    if (decided) return;
-                    decided = true;
-                    video.style.display = '';
-                    iframeWrap.style.display = 'none';
-                }
-
-                function showIframe() {
-                    if (decided) return;
-                    decided = true;
-                    video.style.display = 'none';
-                    iframeWrap.style.display = '';
-                }
-
-                video.addEventListener('loadedmetadata', showVideo);
-                video.addEventListener('canplay', showVideo);
-                video.addEventListener('error', showIframe);
-
-                setTimeout(() => {
-                    if (decided) return;
-                    if (video.readyState > 0) showVideo();
-                    else showIframe();
-                }, 700);
-            });
-        })();
-
-        // Cargar artículos al iniciar
-        cargarArticulosGenerales();
+        cargarArticulosRecientes();
     </script>
 </body>
 </html>

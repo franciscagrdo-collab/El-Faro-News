@@ -180,6 +180,60 @@
             margin-right: 10px;
             opacity: 0.8;
         }
+
+        /* --- Estilos del foro --- */
+        .foro-card {
+            margin-top: 2rem;
+            border-left: 4px solid #3498db;
+        }
+
+        .foro-header {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+        }
+
+        .foro-user {
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+
+        .comentario {
+            border: 1px solid #eee;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+
+        .comentario .meta {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.4rem;
+        }
+
+        .comentario .acciones {
+            margin-top: 0.5rem;
+            display:flex;
+            gap:8px;
+        }
+
+        .foro-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .is-small-muted {
+            font-size: 0.8rem;
+            color: #6b6b6b;
+        }
+
+        /* small responsive tweaks */
+        @media (max-width: 768px) {
+            .hero .level { flex-direction: column; align-items: flex-start;}
+            .logo { height:64px; }
+        }
     </style>
 </head>
 <body>
@@ -228,6 +282,8 @@
                     <a href="deporte.html" class="navbar-item">Deporte</a>
                     <a href="negocios.html" class="navbar-item">Negocios</a>
                     <a href="Nuevo.html" class="navbar-item">Ayúdanos a crecer</a>
+                    <!-- Link foro añadido -->
+                    <a href="#foro" class="navbar-item">Foro</a>
                 </div>
             </div>
         </div>
@@ -313,6 +369,94 @@
                             </div>
                         </article>
                     </div>
+
+                    <!-- ================= FORO: empieza aquí ================= -->
+                    <article id="foro" class="card foro-card">
+                        <div class="card-content">
+                            <div class="foro-header">
+                                <div>
+                                    <h2 class="title is-4">Foro - Comunidad</h2>
+                                    <p class="is-small-muted">Comenta, discute y comparte. Debes crear una cuenta para participar.</p>
+                                </div>
+                                <div class="foro-user" id="foro-user-area">
+                                    <!-- Aquí se mostrará el estado de sesión (login / usuario) -->
+                                </div>
+                            </div>
+
+                            <!-- Panel de login / registro (se muestra cuando no hay sesión) -->
+                            <div id="foro-auth" class="box" style="margin-top:1rem; display:none;">
+                                <div class="columns is-mobile">
+                                    <div class="column">
+                                        <h3 class="title is-6">Crear cuenta</h3>
+                                        <div class="field">
+                                            <label class="label is-small">Usuario</label>
+                                            <div class="control">
+                                                <input id="reg-username" class="input" placeholder="tuNick">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label is-small">Contraseña</label>
+                                            <div class="control">
+                                                <input id="reg-password" class="input" type="password" placeholder="contraseña segura">
+                                            </div>
+                                        </div>
+                                        <div class="control">
+                                            <button id="btn-register" class="button is-primary is-small">Crear cuenta</button>
+                                        </div>
+                                        <p class="is-small-muted mt-2">DISFRUTA LA CONVERSA!!!</p>
+                                    </div>
+
+                                    <div class="column">
+                                        <h3 class="title is-6">Iniciar sesión</h3>
+                                        <div class="field">
+                                            <label class="label is-small">Usuario</label>
+                                            <div class="control">
+                                                <input id="login-username" class="input" placeholder="tuNick">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label is-small">Contraseña</label>
+                                            <div class="control">
+                                                <input id="login-password" class="input" type="password" placeholder="tu contraseña">
+                                            </div>
+                                        </div>
+                                        <div class="control">
+                                            <button id="btn-login" class="button is-link is-small">Entrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Área principal del foro (visible cuando hay sesión) -->
+                            <div id="foro-main" style="display:none; margin-top:1rem;">
+                                <div class="box foro-form">
+                                    <div class="field">
+                                        <label class="label is-small">Nuevo comentario</label>
+                                        <div class="control">
+                                            <textarea id="comentario-text" class="textarea" placeholder="Comparte tu opinión..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="field is-grouped">
+                                        <div class="control">
+                                            <button id="btn-post" class="button is-primary">Publicar</button>
+                                        </div>
+                                        <div class="control">
+                                            <button id="btn-clear" class="button is-light">Limpiar</button>
+                                        </div>
+                                        <div class="control" style="margin-left:auto;">
+                                            <button id="btn-logout" class="button is-danger is-light">Cerrar sesión</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="comentarios-list" style="margin-top:1rem;">
+                                    <!-- Comentarios cargados dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- ================= FORO: termina aquí ================= -->
+
                 </div>
 
                 <div class="column is-4">
@@ -592,6 +736,287 @@
                 document.querySelector('.newsletter-input').value = '';
             }
         });
+
+        /* ================== LÓGICA DEL FORO (almacenamiento local) ================== */
+        (function () {
+            // Keys en localStorage
+            const USERS_KEY = 'ef_users_v1';
+            const COMMENTS_KEY = 'ef_comments_v1';
+            const SESSION_KEY = 'ef_currentUser_v1';
+
+            // Utils
+            function loadUsers() {
+                try {
+                    return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+                } catch (e) { return []; }
+            }
+            function saveUsers(users) {
+                localStorage.setItem(USERS_KEY, JSON.stringify(users));
+            }
+            function loadComments() {
+                try {
+                    return JSON.parse(localStorage.getItem(COMMENTS_KEY) || '[]');
+                } catch (e) { return []; }
+            }
+            function saveComments(comments) {
+                localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
+            }
+            function setSession(username) {
+                localStorage.setItem(SESSION_KEY, username);
+                renderAuthState();
+            }
+            function clearSession() {
+                localStorage.removeItem(SESSION_KEY);
+                renderAuthState();
+            }
+            function currentUser() {
+                return localStorage.getItem(SESSION_KEY);
+            }
+
+            // Escape HTML para evitar inyección
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>"'`=\/]/g, function (s) {
+                    return ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;',
+                        '/': '&#x2F;',
+                        '`': '&#x60;',
+                        '=': '&#x3D;'
+                    })[s];
+                });
+            }
+
+            // Fecha legible
+            function fechaAhora() {
+                return new Date().toLocaleString('es-CL', {
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+            }
+
+            // Render área de autenticación / usuario
+            const authArea = document.getElementById('foro-user-area');
+            const foroAuth = document.getElementById('foro-auth');
+            const foroMain = document.getElementById('foro-main');
+
+            function renderAuthState() {
+                const user = currentUser();
+                authArea.innerHTML = '';
+                if (user) {
+                    // Mostrar usuario conectado
+                    const span = document.createElement('div');
+                    span.className = 'has-text-weight-semibold';
+                    span.innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(user)}`;
+                    authArea.appendChild(span);
+
+                    // mostrar foro principal
+                    foroAuth.style.display = 'none';
+                    foroMain.style.display = 'block';
+                } else {
+                    // mostrar botones para abrir form auth
+                    const btn = document.createElement('button');
+                    btn.className = 'button is-light is-small';
+                    btn.textContent = 'Iniciar / Registrarse';
+                    btn.addEventListener('click', () => {
+                        // toggle auth panel
+                        foroAuth.style.display = foroAuth.style.display === 'none' ? 'block' : 'none';
+                        window.location.hash = '#foro';
+                    });
+                    authArea.appendChild(btn);
+
+                    foroAuth.style.display = 'block';
+                    foroMain.style.display = 'none';
+                }
+                renderComentarios();
+            }
+
+            // Registro
+            document.getElementById('btn-register').addEventListener('click', () => {
+                const u = (document.getElementById('reg-username').value || '').trim();
+                const p = (document.getElementById('reg-password').value || '').trim();
+                if (!u || !p) { alert('Usuario y contraseña son obligatorios.'); return; }
+                const users = loadUsers();
+                if (users.find(x => x.username.toLowerCase() === u.toLowerCase())) {
+                    alert('Ese usuario ya existe. Escoge otro nick.');
+                    return;
+                }
+                // Guardar usuario básico (no seguro, demo)
+                users.push({ username: u, pass: btoa(p) });
+                saveUsers(users);
+                setSession(u);
+                document.getElementById('reg-username').value = '';
+                document.getElementById('reg-password').value = '';
+                alert('Cuenta creada. Bienvenido/a, ' + u + '!');
+            });
+
+            // Login
+            document.getElementById('btn-login').addEventListener('click', () => {
+                const u = (document.getElementById('login-username').value || '').trim();
+                const p = (document.getElementById('login-password').value || '').trim();
+                if (!u || !p) { alert('Usuario y contraseña son obligatorios.'); return; }
+                const users = loadUsers();
+                const found = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.pass === btoa(p));
+                if (!found) {
+                    alert('Credenciales inválidas.');
+                    return;
+                }
+                setSession(found.username);
+                document.getElementById('login-username').value = '';
+                document.getElementById('login-password').value = '';
+                alert('¡Has iniciado sesión!');
+            });
+
+            // Logout
+            document.getElementById('btn-logout').addEventListener('click', () => {
+                clearSession();
+                alert('Sesión cerrada.');
+            });
+
+            // Publicar comentario
+            document.getElementById('btn-post').addEventListener('click', () => {
+                const user = currentUser();
+                if (!user) { alert('Debes iniciar sesión para comentar.'); return; }
+                const text = (document.getElementById('comentario-text').value || '').trim();
+                if (!text) { alert('El comentario está vacío.'); return; }
+                const comments = loadComments();
+                const id = 'c_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+                comments.push({
+                    id,
+                    user,
+                    text,
+                    date: fechaAhora()
+                });
+                saveComments(comments);
+                document.getElementById('comentario-text').value = '';
+                renderComentarios();
+            });
+
+            // Limpiar textarea
+            document.getElementById('btn-clear').addEventListener('click', () => {
+                document.getElementById('comentario-text').value = '';
+            });
+
+            // Renderizar comentarios
+            function renderComentarios() {
+                const lista = document.getElementById('comentarios-list');
+                lista.innerHTML = '';
+                const comments = loadComments();
+                if (!comments.length) {
+                    lista.innerHTML = '<p class="is-small-muted">Aún no hay comentarios. Sé el primero.</p>';
+                    return;
+                }
+                // Mostrar más recientes primero
+                const rev = comments.slice().reverse();
+                rev.forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = 'comentario';
+                    div.dataset.id = c.id;
+
+                    const header = document.createElement('div');
+                    header.className = 'meta';
+                    header.innerHTML = `<strong>${escapeHtml(c.user)}</strong> · <span>${escapeHtml(c.date)}</span>`;
+                    div.appendChild(header);
+
+                    const body = document.createElement('div');
+                    body.className = 'content';
+                    body.innerHTML = `<div class="coment-text">${escapeHtml(c.text)}</div>`;
+                    div.appendChild(body);
+
+                    const acciones = document.createElement('div');
+                    acciones.className = 'acciones';
+
+                    // Si el comentario pertenece al usuario actual, permitir editar / eliminar
+                    if (currentUser() && currentUser() === c.user) {
+                        const btnEdit = document.createElement('button');
+                        btnEdit.className = 'button is-small is-light';
+                        btnEdit.innerHTML = '<i class="fas fa-edit"></i> Editar';
+                        btnEdit.addEventListener('click', () => startEditarComentario(c.id));
+                        acciones.appendChild(btnEdit);
+
+                        const btnDel = document.createElement('button');
+                        btnDel.className = 'button is-small is-danger is-light';
+                        btnDel.innerHTML = '<i class="fas fa-trash"></i> Borrar';
+                        btnDel.addEventListener('click', () => borrarComentario(c.id));
+                        acciones.appendChild(btnDel);
+                    }
+
+                    div.appendChild(acciones);
+                    lista.appendChild(div);
+                });
+            }
+
+            // Editar comentario (editar en línea)
+            function startEditarComentario(id) {
+                const comments = loadComments();
+                const idx = comments.findIndex(x => x.id === id);
+                if (idx === -1) return;
+                const comment = comments[idx];
+                // Encontrar el div
+                const div = document.querySelector(`.comentario[data-id="${id}"]`);
+                if (!div) return;
+                // Crear área de edición
+                const cont = div.querySelector('.coment-text');
+                const original = comment.text;
+                cont.innerHTML = '';
+                const ta = document.createElement('textarea');
+                ta.className = 'textarea';
+                ta.value = original;
+                cont.appendChild(ta);
+
+                const actions = div.querySelector('.acciones');
+                actions.innerHTML = '';
+
+                const btnSave = document.createElement('button');
+                btnSave.className = 'button is-small is-primary';
+                btnSave.textContent = 'Guardar';
+                btnSave.addEventListener('click', () => {
+                    const nuevo = (ta.value || '').trim();
+                    if (!nuevo) { alert('El comentario no puede quedar vacío.'); return; }
+                    comments[idx].text = nuevo;
+                    comments[idx].date = fechaAhora() + ' (editado)';
+                    saveComments(comments);
+                    renderComentarios();
+                });
+                actions.appendChild(btnSave);
+
+                const btnCancel = document.createElement('button');
+                btnCancel.className = 'button is-small is-light';
+                btnCancel.textContent = 'Cancelar';
+                btnCancel.addEventListener('click', () => {
+                    renderComentarios();
+                });
+                actions.appendChild(btnCancel);
+            }
+
+            // Borrar comentario
+            function borrarComentario(id) {
+                if (!confirm('¿Eliminar este comentario? Esta acción no se puede deshacer.')) return;
+                let comments = loadComments();
+                comments = comments.filter(c => c.id !== id);
+                saveComments(comments);
+                renderComentarios();
+            }
+
+            // Inicializar: si no existen keys, crearlas vacías
+            if (!localStorage.getItem(USERS_KEY)) localStorage.setItem(USERS_KEY, JSON.stringify([]));
+            if (!localStorage.getItem(COMMENTS_KEY)) localStorage.setItem(COMMENTS_KEY, JSON.stringify([]));
+
+            // Mostrar estado actual
+            renderAuthState();
+
+            // Auto-scroll al foro si hash = #foro
+            if (location.hash === '#foro') {
+                setTimeout(() => {
+                    const el = document.getElementById('foro');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+            }
+        })();
+        /* ================== FIN LÓGICA DEL FORO ================== */
 
         cargarArticulosRecientes();
     </script>
